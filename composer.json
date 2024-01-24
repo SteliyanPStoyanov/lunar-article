@@ -1,0 +1,62 @@
+{
+    "name": "lunar-article/addon",
+    "version": "0.1.0",
+    "type": "project",
+    "description": "Article functionality for Lunar.",
+    "keywords": [
+        "lunarphp",
+        "laravel",
+        "ecommerce",
+        "e-commerce",
+        "headless",
+        "store",
+        "shop",
+        "cart",
+        "stripe",
+        "article"
+    ],
+    "license": "MIT",
+    "source": {
+        "type": "git",
+        "url": "https://github.com/SteliyanPStoyanov/lunar-article.git",
+        "reference": ""
+    },
+    "authors": [
+        {
+            "name": "Steliyan Stoyanov",
+            "homepage": "https://github.com/SteliyanPStoyanov"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "lunarphp/lunar": "^0.6",
+        "livewire/livewire": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "mockery/mockery": "^1.4.4",
+        "orchestra/testbench": "^6.0|^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lunar\\Article\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lunar\\Article\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "lunar": {
+            "name": "Article"
+        },
+        "laravel": {
+            "providers": [
+                "Lunar\\Article\\ArticleServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
