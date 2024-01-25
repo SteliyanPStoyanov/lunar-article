@@ -9,4 +9,5 @@ return [
     'restore_zone.title' => 'Restore record',
     'restore_zone.label' => 'Restore :model',
     'article_category.label' => 'Article Category',
+    'short_description.label' => 'Short Description',
 ];

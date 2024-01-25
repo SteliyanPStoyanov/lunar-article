@@ -94,11 +94,19 @@
                             <x-hub::input.text id="title" wire:model="article.title"/>
                         </x-hub::input.group>
                         <x-hub::input.group
+                            :label="__('article::inputs.short_description.label')"
+                            for="short_description"
+                            :errors="$errors->get('article.short_description') ?: $errors->get('article')">
+                            <x-hub::input.richtext id="short_description" wire:model.defer="article.short_description"
+                                                   :initial-value="$article->description"/>
+                        </x-hub::input.group>
+                        <x-hub::input.group
                             :label="__('article::inputs.description.label')"
                             for="description"
                             :errors="$errors->get('article.description') ?: $errors->get('article')">
                             <x-hub::input.richtext id="description" wire:model.defer="article.description"
-                                                   :initial-value="$article->description" :options="$this->richTextOption"/>
+                                                   :initial-value="$article->description"
+                                                   :options="$this->richTextOption"/>
                         </x-hub::input.group>
                     </div>
                 </div>
@@ -121,35 +129,35 @@
             @endforeach
             @if ($article->id)
                 @if($article->deleted_at)
-                <div class="mb-24 bg-white border border-red-300 rounded shadow">
-                    <header class="px-6 py-4 text-red-700 bg-white border-b border-red-300 rounded-t">
-                        {{ __('adminhub::inputs.danger_zone.title') }}
-                    </header>
-                    <div class="p-6 text-sm">
-                        <div class="grid items-center grid-cols-12 gap-4">
-                            <div class="col-span-12 md:col-span-6">
-                                <strong>{{ __('adminhub::partials.forms.brand_delete_brand') }}</strong>
+                    <div class="mb-24 bg-white border border-red-300 rounded shadow">
+                        <header class="px-6 py-4 text-red-700 bg-white border-b border-red-300 rounded-t">
+                            {{ __('adminhub::inputs.danger_zone.title') }}
+                        </header>
+                        <div class="p-6 text-sm">
+                            <div class="grid items-center grid-cols-12 gap-4">
+                                <div class="col-span-12 md:col-span-6">
+                                    <strong>{{ __('adminhub::partials.forms.brand_delete_brand') }}</strong>
 
-                                <p class="text-xs text-gray-600">
-                                    {{ __('adminhub::partials.forms.brand_name_delete') }}
-                                </p>
-                            </div>
-                            <div class="col-span-9 lg:col-span-4">
-                                <x-hub::input.text wire:model="deleteConfirm"/>
-                            </div>
+                                    <p class="text-xs text-gray-600">
+                                        {{ __('adminhub::partials.forms.brand_name_delete') }}
+                                    </p>
+                                </div>
+                                <div class="col-span-9 lg:col-span-4">
+                                    <x-hub::input.text wire:model="deleteConfirm"/>
+                                </div>
 
-                            <div class="col-span-3 text-right lg:col-span-2">
-                                <x-hub::button :disabled="false"
-                                               theme="danger"
-                                               wire:click="deleteForce"
-                                               type="button">
-                                    {{ __('adminhub::global.delete') }}
-                                </x-hub::button>
+                                <div class="col-span-3 text-right lg:col-span-2">
+                                    <x-hub::button :disabled="false"
+                                                   theme="danger"
+                                                   wire:click="deleteForce"
+                                                   type="button">
+                                        {{ __('adminhub::global.delete') }}
+                                    </x-hub::button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                    @endif
+                @endif
                 <div
                     @class(['bg-white border rounded shadow',
                         'border-red-300' => !$article->deleted_at,

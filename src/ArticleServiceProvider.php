@@ -55,7 +55,7 @@ class ArticleServiceProvider extends ServiceProvider
                 ->name(__('article::menu.sidebar.article'))
                 ->handle('hub.Article')
                 ->route('hub.article.index')
-                ->icon('book-open');
+                ->icon('newspaper');
         });
 
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');

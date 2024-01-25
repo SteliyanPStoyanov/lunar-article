@@ -6,6 +6,7 @@ use Lunar\Article\Models\Article;
 
 class ComponentCreate extends AbstractArticle
 {
+
     /**
      * Called when the component is mounted.
      *

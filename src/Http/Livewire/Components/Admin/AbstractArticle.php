@@ -43,6 +43,7 @@ abstract class AbstractArticle extends Component
      * @var bool
      */
     public $showDeleteConfirm = false;
+    public $customName;
 
     /**
      * Whether to show the delete confirmation modal.
@@ -89,6 +90,7 @@ abstract class AbstractArticle extends Component
             'article.status' => 'required|string',
             'article.title' => 'required|string',
             'article.description' => 'required|string',
+            'article.short_description' => 'required|string',
             'article.article_category_id' => 'nullable',
             'ArticleCategory' => 'nullable',
         ];

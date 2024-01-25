@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Lunar\Base\BaseModel;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Lunar\Base\Casts\AsAttributeData;
 use Lunar\Base\Traits\HasMacros;
 use Lunar\Base\Traits\HasMedia;
@@ -14,7 +15,11 @@ use Lunar\Base\Traits\HasTranslations;
 use Lunar\Base\Traits\HasUrls;
 use Lunar\Base\Traits\LogsActivity;
 use Lunar\Base\Traits\Searchable;
+use Lunar\Article\ArticleMediaConversions;
 use Spatie\MediaLibrary\HasMedia as SpatieHasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\Image\Manipulations;
 
 /**
  * @property int $id
@@ -27,7 +32,7 @@ use Spatie\MediaLibrary\HasMedia as SpatieHasMedia;
 class Article extends BaseModel implements SpatieHasMedia
 {
     use HasMacros;
-    use HasMedia;
+    use InteractsWithMedia;
     use HasTranslations;
     use HasUrls;
     use LogsActivity;
@@ -45,6 +50,7 @@ class Article extends BaseModel implements SpatieHasMedia
         'status',
         'title',
         'description',
+        'short_description',
         'article_category_id',
     ];
 
@@ -70,7 +76,7 @@ class Article extends BaseModel implements SpatieHasMedia
     /**
      * Apply the status scope.
      *
-     * @param  string  $status
+     * @param string $status
      * @return Builder
      */
     public function scopeStatus(Builder $query, $status)
@@ -78,7 +84,7 @@ class Article extends BaseModel implements SpatieHasMedia
         return $query->whereStatus($status);
     }
 
-        /**
+    /**
      * Return the brand relationship.
      *
      * @return BelongsTo
@@ -86,5 +92,36 @@ class Article extends BaseModel implements SpatieHasMedia
     public function articleCategory()
     {
         return $this->belongsTo(ArticleCategory::class);
+    }
+
+    /**
+     * @param Media|null $media
+     * @return void
+     * @throws InvalidManipulation
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+
+        $conversionClasses = [ArticleMediaConversions::class];
+
+
+        foreach ($conversionClasses as $classname) {
+            app($classname)->apply($this);
+        }
+
+        // Add a conversion that the hub uses...
+        $this->addMediaConversion('small')
+            ->fit(Manipulations::FIT_FILL, 300, 300)
+            ->sharpen(10)
+            ->keepOriginalImageFormat();
+    }
+
+        /**
+     * Relationship for thumbnail.
+     */
+    public function thumbnail(): MorphOne
+    {
+        return $this->morphOne(config('media-library.media_model'), 'model')
+            ->where('custom_properties->primary', true);
     }
 }
